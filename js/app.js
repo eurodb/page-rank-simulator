@@ -7,6 +7,7 @@ import { generateGraph }           from './graph.js';
 import { Simulation }              from './simulation.js';
 import { renderLinksList }         from './ui.js';
 import { GraphViz, PAGE_LABELS }   from './graph-viz.js';
+import { detectRankSinks }         from './analysis.js';
 
 // ── DOM refs ──────────────────────────────────────────────────
 const numPagesInput  = document.getElementById('numPages');
@@ -25,6 +26,11 @@ const dampingDisplay = document.getElementById('dampingDisplay');
 const statsSection   = document.getElementById('stats');
 const legendSection  = document.getElementById('legend');
 const linksListEl    = document.getElementById('linksList');
+const sinkPanel      = document.getElementById('sinkPanel');
+const sinkPagesEl    = document.getElementById('sinkPages');
+document.getElementById('sinkDismiss').addEventListener('click', () => {
+  sinkPanel.style.display = 'none';
+});
 
 // ── State ─────────────────────────────────────────────────────
 let pages    = null;
@@ -75,6 +81,15 @@ generateBtn.addEventListener('click', () => {
     legendSection.style.display = 'block';
     stepCountEl.textContent   = '0';
     currentPageEl.textContent = '—';
+
+    // Rank sink detection
+    const sinkIds = detectRankSinks(pages);
+    if (sinkIds.length > 0) {
+      sinkPagesEl.textContent = sinkIds.map(id => PAGE_LABELS[id]).join(' & ');
+      sinkPanel.style.display = 'flex';
+    } else {
+      sinkPanel.style.display = 'none';
+    }
 
     runBtn.disabled   = false;
     stopBtn.disabled  = true;
