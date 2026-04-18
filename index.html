@@ -55,6 +55,20 @@
       </div>
     </section>
 
+    <div id="sinkPanel" class="sink-panel" style="display:none">
+      <span class="sink-icon">&#9888;</span>
+      <div class="sink-content">
+        <strong>Rank Sink detected &mdash; Pages <span id="sinkPages"></span></strong>
+        form a closed loop: their outgoing links stay entirely within the group.
+        Without teleportation the random surfer would be trapped here forever,
+        absorbing all PageRank. The damping factor provides the only escape
+        (probability 1&minus;d per step), which is why these pages accumulate a
+        disproportionately high visit share. Try lowering the damping factor
+        slider to reduce the effect.
+      </div>
+      <button class="sink-dismiss" id="sinkDismiss">&#10005;</button>
+    </div>
+
     <div id="graphViz" class="graph-container" style="display:none"></div>
 
     <section class="legend" id="legend" style="display:none">
