@@ -57,28 +57,31 @@ dampingInput.addEventListener('input', () => {
 
 // ── Generate ──────────────────────────────────────────────────
 generateBtn.addEventListener('click', () => {
-  const n = parseInt(numPagesInput.value);
-  if (isNaN(n) || n < 2 || n > 20) return;
+  try {
+    const n = parseInt(numPagesInput.value);
+    if (isNaN(n) || n < 2 || n > 20) return;
 
-  stopLoop();
+    stopLoop();
 
-  pages    = generateGraph(n);
-  sim      = new Simulation(pages, getDamping());
-  prevPage = null;
+    pages    = generateGraph(n);
+    sim      = new Simulation(pages, getDamping());
 
-  graphViz = new GraphViz(graphVizEl, pages);
-  graphViz.init();
-  graphVizEl.style.display = 'block';
-  renderLinksList(pages, linksListEl);
+    graphViz = new GraphViz(graphVizEl, pages);
+    graphViz.init();
+    graphVizEl.style.display = 'block';
+    renderLinksList(pages, linksListEl);
 
-  statsSection.style.display  = 'flex';
-  legendSection.style.display = 'block';
-  stepCountEl.textContent   = '0';
-  currentPageEl.textContent = '—';
+    statsSection.style.display  = 'flex';
+    legendSection.style.display = 'block';
+    stepCountEl.textContent   = '0';
+    currentPageEl.textContent = '—';
 
-  runBtn.disabled   = false;
-  stopBtn.disabled  = true;
-  resetBtn.disabled = false;
+    runBtn.disabled   = false;
+    stopBtn.disabled  = true;
+    resetBtn.disabled = false;
+  } catch (err) {
+    console.error('Generate failed:', err);
+  }
 });
 
 // ── Run ───────────────────────────────────────────────────────
@@ -142,3 +145,4 @@ function stopLoop() {
     rafId = null;
   }
 }
+
