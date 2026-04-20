@@ -48,6 +48,7 @@ P(i → j) = 1 / (number of outgoing links from page i)
 - **Adjustable damping factor** — 0.00 to 1.00, updated live without stopping the simulation
 - **Reset** clears visit counts without regenerating the graph, so you can re-run on the same topology
 - **Link structure legend** below the graph showing every page's outgoing links
+- **Rank Sink detector** — automatically identifies trapped page groups after each generation and displays a contextual warning panel explaining the phenomenon
 
 ---
 
@@ -63,6 +64,7 @@ Page Rank Simulator/
     ├── graph.js            Random directed graph generator (Fisher-Yates shuffle)
     ├── simulation.js       Monte Carlo random-surfer engine with configurable damping
     ├── graph-viz.js        SVG network graph — layout, edges, labels, flash & highlight
+    ├── analysis.js         Graph analysis — Tarjan SCC algorithm for rank sink detection
     └── ui.js               Link-structure legend renderer
 ```
 
@@ -139,6 +141,8 @@ http://localhost:8080
 | **Stationary distribution** | The long-run fraction of time spent in each state — this is the PageRank vector |
 | **Monte Carlo method** | Approximating a mathematical result (PageRank) by running many random experiments (surfer steps) |
 | **Convergence** | As total steps → ∞, observed visit frequencies → true PageRank values |
+| **Rank Sink** | A group of pages whose outgoing links stay entirely within the group. The random surfer loops inside indefinitely without teleportation, causing those pages to accumulate disproportionately high PageRank. Detected automatically using Tarjan's SCC algorithm |
+| **SCC (Strongly Connected Component)** | A maximal set of nodes where every node is reachable from every other. A sink SCC has no outgoing edges to other SCCs |
 
 ---
 
